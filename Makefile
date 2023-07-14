@@ -1,18 +1,12 @@
-build: test
-	@echo 'executing buildaaaa'
+build: test publish
+	echo 'executing buildaaaa'
 	@echo 'cmd2'
-	
+
 test:
-	echo 'executing test'
+	echo 'testtttttttttttt'
 
 publish:
 	echo 'executing publish'
 
 gendocs:
-
-# gendocs: publish
-# 	echo 'executing gendocs'
-
-# example
-# gomake build -f filename
-# if -f is not provided use Makefile in the repo (don't forget the checks)	
+	echo 'executing publish'
