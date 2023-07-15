@@ -3,6 +3,7 @@ package internal
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -16,6 +17,10 @@ var ErrorInvalidFormat = errors.New("invalid format for makefile")
 // ErrorNoFile
 var ErrorNoFile = errors.New("file not found")
 
+// ErrorNoCommandFound
+var ErrorNoCommandFound = errors.New("commands not found for target")
+
+// CheckMakeFile checks for error in openning file
 func CheckMakeFile(filePath string) (*os.File, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -25,6 +30,7 @@ func CheckMakeFile(filePath string) (*os.File, error) {
 	return file, nil
 }
 
+// ParseCommand parses command entered from the user
 func ParseCommand(filePath string, target string) (string, string, error) {
 
 	if len(target) == 0 {
@@ -50,6 +56,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		fmt.Println(line)
 		// Skip comments and empty lines
 		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
 			continue
@@ -91,10 +98,15 @@ func ParseMakefile(filePath string) (*Graph, error) {
 		}
 		return nil, ErrorInvalidFormat
 	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, err
-	}
-
 	return graph, nil
+}
+
+// CheckNoCommands checks if there is a traget that hasn't commands
+func CheckNoCommands(graph *Graph) error {
+	for _, node := range graph.Nodes {
+		if len(node.Commands) == 0 {
+			return fmt.Errorf("error %s:%s", ErrorNoCommandFound, node.Name)
+		}
+	}
+	return nil
 }

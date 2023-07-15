@@ -46,7 +46,8 @@ func TestCheckMakeFile(t *testing.T) {
 }
 
 func TestParseMakefile(t *testing.T) {
-	makefile := `target:
+	makefile := `
+target:
 	echo "Hello, World!"`
 
 	file, err := ioutil.TempFile("", "Makefile")
@@ -77,5 +78,118 @@ func TestParseMakefile(t *testing.T) {
 
 	if !reflect.DeepEqual(graph, expectedGraph) {
 		t.Errorf("Parsed graph %v does not match expected graph %v", graph, expectedGraph)
+	}
+
+	makefile = `
+:
+	echo "Hello, World!"`
+
+	file, err = ioutil.TempFile("", "Makefile")
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+	defer os.Remove(file.Name())
+
+	_, err = file.WriteString(makefile)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	_, err = ParseMakefile(file.Name())
+	if err != ErrorInvalidFormat {
+		t.Errorf("Error: %s", err)
+	}
+
+	makefile = `
+ : test
+	echo "Hello, World!"`
+
+	file, err = ioutil.TempFile("", "Makefile")
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+	defer os.Remove(file.Name())
+
+	_, err = file.WriteString(makefile)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	_, err = ParseMakefile(file.Name())
+	if err != ErrorInvalidFormat {
+		t.Errorf("Error: %s", err)
+	}
+
+	_, err = ParseMakefile("test")
+	if err == nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	makefile = `
+	echo 'executing build`
+
+	file, err = ioutil.TempFile("", "Makefile")
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+	defer os.Remove(file.Name())
+
+	_, err = file.WriteString(makefile)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	_, err = ParseMakefile(file.Name())
+	if err != ErrorInvalidFormat {
+		t.Errorf("Error: %s", err)
+	}
+
+}
+
+func TestCheckNoCommands(t *testing.T) {
+	makefile := `
+	build: test
+	
+	test: build
+		echo 'testtttttttttttt'`
+	file, err := ioutil.TempFile("", "Makefile")
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+	defer os.Remove(file.Name())
+	_, err = file.WriteString(makefile)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	graph, err := ParseMakefile(file.Name())
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	err = CheckNoCommands(graph)
+	if err == nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	makefile = `
+	build: test
+		echo 'build'
+	test: build
+		echo 'testtttttttttttt'`
+
+	_, err = file.WriteString(makefile)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	graph, err = ParseMakefile(file.Name())
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+
+	err = CheckNoCommands(graph)
+	if err != nil {
+		t.Errorf("Error: %s", err)
 	}
 }

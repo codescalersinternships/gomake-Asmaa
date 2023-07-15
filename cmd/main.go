@@ -26,6 +26,12 @@ func main() {
 		return
 	}
 
+	err = internal.CheckNoCommands(graph)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
 	err = internal.CheckCircularDependencies(graph)
 	if err != nil {
 		fmt.Println("Error", err)

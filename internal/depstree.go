@@ -50,10 +50,6 @@ func DFS(graph *Graph, node *Node, buildOrder *[]string) error {
 			if err != nil {
 				return err
 			}
-			continue
-		}
-		if depNode.InStack {
-			return fmt.Errorf("error %s found between: %s -> %s", ErrorCircularDependency, node.Name, depNode.Name)
 		}
 	}
 
