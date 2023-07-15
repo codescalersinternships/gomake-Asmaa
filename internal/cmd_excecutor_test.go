@@ -11,11 +11,10 @@ func TestRunTarget(t *testing.T) {
 			"build": {
 				Name:         "build",
 				Dependencies: []string{},
-				Commands:    []Command{Command{"echo 'build'", false}},
+				Commands:     []Command{{"echo 'build'", false}},
 			},
 		},
 	}
-
 
 	// Invoke the RunTarget function with the "build" target
 	err := RunTarget(graph, "main.o")
@@ -34,11 +33,10 @@ func TestRunTarget(t *testing.T) {
 			"build": {
 				Name:         "build",
 				Dependencies: []string{},
-				Commands:    []Command{Command{"echoo 'build'", false}},
+				Commands:     []Command{{"echoo 'build'", false}},
 			},
 		},
 	}
-
 
 	// Invoke the RunTarget function with the "build" target
 	err = RunTarget(graph, "build")
@@ -51,12 +49,12 @@ func TestRunTarget(t *testing.T) {
 			"build": {
 				Name:         "build",
 				Dependencies: []string{"test"},
-				Commands:    []Command{Command{"echo 'build'", false}},
+				Commands:     []Command{{"echo 'build'", false}},
 			},
 			"test": {
 				Name:         "test",
 				Dependencies: []string{},
-				Commands:    []Command{Command{"echo 'test'", false}},
+				Commands:     []Command{{"echo 'test'", false}},
 			},
 		},
 	}
@@ -70,12 +68,12 @@ func TestRunTarget(t *testing.T) {
 			"build": {
 				Name:         "build",
 				Dependencies: []string{"test"},
-				Commands:    []Command{Command{"echo 'build'", false}},
+				Commands:     []Command{{"echo 'build'", false}},
 			},
 			"test": {
 				Name:         "test",
 				Dependencies: []string{},
-				Commands:    []Command{Command{"echoo 'test'", false}},
+				Commands:     []Command{{"echoo 'test'", false}},
 			},
 		},
 	}

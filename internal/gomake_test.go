@@ -1,10 +1,10 @@
 package internal
 
 import (
+	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
-	"io/ioutil"
 )
 
 func TestParseCommand(t *testing.T) {
@@ -23,7 +23,7 @@ func TestParseCommand(t *testing.T) {
 	if target != "target" {
 		t.Errorf("Expected target name: target, but got: %s", target)
 	}
-	
+
 	args2 = ""
 
 	_, _, err = ParseCommand(args1, args2)
@@ -54,7 +54,7 @@ func TestParseMakefile(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 	defer os.Remove(file.Name())
- 
+
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
@@ -65,7 +65,7 @@ func TestParseMakefile(t *testing.T) {
 			"target": {
 				Name:         "target",
 				Dependencies: []string{},
-				Commands:    []Command{Command{"echo \"Hello, World!\"", false}},
+				Commands:     []Command{{"echo \"Hello, World!\"", false}},
 			},
 		},
 	}
@@ -74,7 +74,7 @@ func TestParseMakefile(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
-	
+
 	if !reflect.DeepEqual(graph, expectedGraph) {
 		t.Errorf("Parsed graph %v does not match expected graph %v", graph, expectedGraph)
 	}
