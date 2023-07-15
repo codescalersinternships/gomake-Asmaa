@@ -56,7 +56,6 @@ func ParseMakefile(filePath string) (*Graph, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		fmt.Println(line)
 		// Skip comments and empty lines
 		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
 			continue
