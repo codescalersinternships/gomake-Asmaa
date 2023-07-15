@@ -1,12 +1,8 @@
 build: test publish
-	echo 'executing buildaaaa'
-	@echo 'cmd2'
+	echo 'executing build'
 
 test: 
-	echo 'testtttttttttttt'
+	echo 'executing test'
 
 publish:
-	echo 'executing publish'
-
-gendocs:
 	echo 'executing publish'
