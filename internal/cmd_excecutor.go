@@ -1,10 +1,10 @@
 package internal
 
 import (
-	"fmt"
 	"errors"
-	"strings"
+	"fmt"
 	"os/exec"
+	"strings"
 )
 
 // ErrorTargetNotFound
@@ -35,14 +35,14 @@ func RunTarget(graph *Graph, targetName string) error {
 
 		name := parts[0]
 		arg := parts[1:]
-		
+
 		cmd := exec.Command(name, arg...)
 		output, err := cmd.CombinedOutput()
-	
+
 		if err != nil {
 			return err
 		}
-	
+
 		fmt.Print(string(output))
 	}
 

@@ -1,9 +1,8 @@
-
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 
 	"github.com/codescalersinternships/gomake-Asmaa/internal"
 )
@@ -39,4 +38,3 @@ func main() {
 		return
 	}
 }
-

@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 // Node represents a node in the graph
@@ -16,7 +16,7 @@ type Node struct {
 
 type Command struct {
 	command string
-	prefix bool
+	prefix  bool
 }
 
 // Graph represents the entire graph
@@ -42,7 +42,7 @@ func DFS(graph *Graph, node *Node, buildOrder *[]string) error {
 		}
 
 		if depNode.InStack {
-			return fmt.Errorf("error %s found between: %s -> %s",ErrorCircularDependency, node.Name, depNode.Name)
+			return fmt.Errorf("error %s found between: %s -> %s", ErrorCircularDependency, node.Name, depNode.Name)
 		}
 
 		if !depNode.Visited {
@@ -51,9 +51,9 @@ func DFS(graph *Graph, node *Node, buildOrder *[]string) error {
 				return err
 			}
 			continue
-		} 
+		}
 		if depNode.InStack {
-			return fmt.Errorf("error %s found between: %s -> %s",ErrorCircularDependency, node.Name, depNode.Name)
+			return fmt.Errorf("error %s found between: %s -> %s", ErrorCircularDependency, node.Name, depNode.Name)
 		}
 	}
 
@@ -63,9 +63,8 @@ func DFS(graph *Graph, node *Node, buildOrder *[]string) error {
 	return nil
 }
 
-
 // CheckCircularDependencies checks for circular dependencies
-func CheckCircularDependencies(graph *Graph) (error) {
+func CheckCircularDependencies(graph *Graph) error {
 	buildOrder := make([]string, 0)
 
 	for _, node := range graph.Nodes {

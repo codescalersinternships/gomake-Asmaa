@@ -1,9 +1,9 @@
 package internal
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
-	"io/ioutil"
 )
 
 func TestCheckCircularDependencies(t *testing.T) {
@@ -15,7 +15,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 	defer os.Remove(file.Name())
- 
+
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)

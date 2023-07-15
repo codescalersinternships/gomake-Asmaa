@@ -1,10 +1,10 @@
 package internal
 
 import (
+	"bufio"
 	"errors"
 	"os"
 	"strings"
-	"bufio"
 )
 
 // ErrorNoTarget
@@ -52,7 +52,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 		line := scanner.Text()
 		// Skip comments and empty lines
 		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
-			continue 
+			continue
 		}
 
 		// Found a new target
@@ -60,7 +60,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			parts := strings.Split(line, ":")
 
 			targetName := strings.TrimSpace(parts[0])
-			if(targetName == "") {
+			if targetName == "" {
 				return nil, ErrorInvalidFormat
 			}
 
@@ -76,7 +76,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			currentTarget.Dependencies = append(currentTarget.Dependencies, dependencies...)
 
 			continue
-		} 
+		}
 
 		// Found a command for the current target
 		if strings.HasPrefix(line, "\t") && currentTarget != nil {
