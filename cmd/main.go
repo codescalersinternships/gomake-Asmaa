@@ -1,26 +1,27 @@
+
 package main
 
 import (
 	"fmt"
+	"flag"
 
 	"github.com/codescalersinternships/gomake-Asmaa/internal"
 )
 
 func main() {
 
-	filePath, target, err := internal.ParseCommand()
+	arg1 := flag.String("f", "Makefile", "make file path")
+
+	arg2 := flag.String("t", "", "make file path")
+	flag.Parse()
+
+	filePath, target, err := internal.ParseCommand(*arg1, *arg2)
 	if err != nil {
 		fmt.Println("Error parsing Makefile:", err)
 		return
 	}
 
-	file, err := internal.CheckMakeFile(filePath)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	graph, err := internal.ParseMakefile(file)
+	graph, err := internal.ParseMakefile(filePath)
 	if err != nil {
 		fmt.Println("Error parsing Makefile:", err)
 		return
@@ -38,3 +39,4 @@ func main() {
 		return
 	}
 }
+

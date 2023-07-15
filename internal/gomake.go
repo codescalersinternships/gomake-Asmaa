@@ -2,7 +2,6 @@ package internal
 
 import (
 	"errors"
-	"flag"
 	"os"
 	"strings"
 	"bufio"
@@ -14,29 +13,33 @@ var ErrorNoTarget = errors.New("no target found")
 // ErrorInvalidFormat
 var ErrorInvalidFormat = errors.New("invalid format for makefile")
 
-func ParseCommand() (string, string, error) {
-	filePath := flag.String("f", "Makefile", "make file path")
-
-	target := flag.String("t", "", "make file path")
-	flag.Parse()
-
-	if len(*target) == 0 {
-		return "", "", ErrorNoTarget
-	}
-	return *filePath, *target, nil
-}
+// ErrorNoFile
+var ErrorNoFile = errors.New("file not found")
 
 func CheckMakeFile(filePath string) (*os.File, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, err
+		return nil, ErrorNoFile
 	}
 
 	return file, nil
 }
 
+func ParseCommand(filePath string, target string) (string, string, error) {
+
+	if len(target) == 0 {
+		return "", "", ErrorNoTarget
+	}
+	return filePath, target, nil
+}
+
 // ParseMakefile parses the Makefile and returns the graph representation
-func ParseMakefile(file *os.File) (*Graph, error) {
+func ParseMakefile(filePath string) (*Graph, error) {
+
+	file, err := CheckMakeFile(filePath)
+	if err != nil {
+		return nil, err
+	}
 
 	scanner := bufio.NewScanner(file)
 

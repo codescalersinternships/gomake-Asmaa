@@ -2,7 +2,7 @@ build: test publish
 	echo 'executing buildaaaa'
 	@echo 'cmd2'
 
-test:
+test: 
 	echo 'testtttttttttttt'
 
 publish:
