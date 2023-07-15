@@ -7,7 +7,6 @@ import (
 
 // Node represents a node in the graph
 type Node struct {
-	Name         string
 	Dependencies []string
 	Commands     []Command
 	Visited      bool
@@ -31,37 +30,41 @@ var ErrorDependencyNotFound = errors.New("dependency not found")
 var ErrorCircularDependency = errors.New("circular dependency")
 
 // DFS performs a depth-first search to detect cycles
-func DFS(graph *Graph, node *Node) error {
-	node.Visited = true
-	node.InStack = true
+func DFS(graph *Graph, node string) error {
 
-	for _, dep := range node.Dependencies {
+	visitedNode := graph.Nodes[node]
+
+	visitedNode.Visited = true
+	visitedNode.InStack = true
+
+	for _, dep := range visitedNode.Dependencies {
 		depNode := graph.Nodes[dep]
 		if depNode == nil {
-			return fmt.Errorf("error %s dependency %s not found for target %s", ErrorDependencyNotFound, dep, node.Name)
+			return fmt.Errorf("error %s dependency %s not found for target %v", ErrorDependencyNotFound, dep, node)
 		}
 
 		if depNode.InStack {
-			return fmt.Errorf("error %s found between: %s -> %s", ErrorCircularDependency, node.Name, depNode.Name)
+			return fmt.Errorf("error %s found between: %v -> %s", ErrorCircularDependency, node, dep)
 		}
 
 		if !depNode.Visited {
-			err := DFS(graph, depNode)
+			err := DFS(graph, dep)
 			if err != nil {
 				return err
 			}
 		}
 	}
 
-	node.InStack = false
+	visitedNode.InStack = false
 	return nil
 }
 
 // CheckCircularDependencies checks for circular dependencies
 func CheckCircularDependencies(graph *Graph) error {
 
-	for _, node := range graph.Nodes {
-		if !node.Visited {
+	for node := range graph.Nodes {
+		visitedNode := graph.Nodes[node]
+		if !visitedNode.Visited {
 			err := DFS(graph, node)
 			if err != nil {
 				return err

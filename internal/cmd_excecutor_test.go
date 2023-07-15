@@ -9,7 +9,6 @@ func TestRunTarget(t *testing.T) {
 	graph := &Graph{
 		Nodes: map[string]*Node{
 			"build": {
-				Name:         "build",
 				Dependencies: []string{},
 				Commands:     []Command{{"echo 'build'", false}},
 			},
@@ -31,7 +30,6 @@ func TestRunTarget(t *testing.T) {
 	graph = &Graph{
 		Nodes: map[string]*Node{
 			"build": {
-				Name:         "build",
 				Dependencies: []string{},
 				Commands:     []Command{{"echoo 'build'", false}},
 			},
@@ -47,12 +45,10 @@ func TestRunTarget(t *testing.T) {
 	graph = &Graph{
 		Nodes: map[string]*Node{
 			"build": {
-				Name:         "build",
 				Dependencies: []string{"test"},
 				Commands:     []Command{{"echo 'build'", false}},
 			},
 			"test": {
-				Name:         "test",
 				Dependencies: []string{},
 				Commands:     []Command{{"echo 'test'", false}},
 			},
@@ -66,12 +62,10 @@ func TestRunTarget(t *testing.T) {
 	graph = &Graph{
 		Nodes: map[string]*Node{
 			"build": {
-				Name:         "build",
 				Dependencies: []string{"test"},
 				Commands:     []Command{{"echo 'build'", false}},
 			},
 			"test": {
-				Name:         "test",
 				Dependencies: []string{},
 				Commands:     []Command{{"echoo 'test'", false}},
 			},

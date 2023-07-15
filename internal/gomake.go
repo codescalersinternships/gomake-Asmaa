@@ -71,7 +71,6 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			}
 
 			currentTarget = &Node{
-				Name:         targetName,
 				Dependencies: make([]string, 0),
 				Commands:     make([]Command, 0),
 			}
@@ -104,7 +103,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 func CheckNoCommands(graph *Graph) error {
 	for _, node := range graph.Nodes {
 		if len(node.Commands) == 0 {
-			return fmt.Errorf("error %s:%s", ErrorNoCommandFound, node.Name)
+			return fmt.Errorf("error %v:%v", ErrorNoCommandFound, node)
 		}
 	}
 	return nil
