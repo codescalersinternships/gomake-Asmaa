@@ -9,8 +9,8 @@ import (
 // RunTarget executes the commands for the specified target
 func RunTarget(graph *Graph, targetName string) error {
 
-	target := graph.Nodes[targetName]
-	if target == nil {
+	target, found := graph.Nodes[targetName]
+	if !found {
 		return fmt.Errorf("target %s not found", targetName)
 	}
 

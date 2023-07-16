@@ -7,7 +7,7 @@ import (
 func TestRunTarget(t *testing.T) {
 	// Set up a sample graph with targets and commands
 	graph := &Graph{
-		Nodes: map[string]*Node{
+		Nodes: map[string]Node{
 			"build": {
 				dependencies: []string{},
 				commands:     []string{"echo 'build'"},
@@ -28,7 +28,7 @@ func TestRunTarget(t *testing.T) {
 	}
 
 	graph = &Graph{
-		Nodes: map[string]*Node{
+		Nodes: map[string]Node{
 			"build": {
 				dependencies: []string{},
 				commands:     []string{"echoo 'build'"},
@@ -43,7 +43,7 @@ func TestRunTarget(t *testing.T) {
 	}
 
 	graph = &Graph{
-		Nodes: map[string]*Node{
+		Nodes: map[string]Node{
 			"build": {
 				dependencies: []string{"test"},
 				commands:     []string{"@echo 'build'"},
@@ -60,7 +60,7 @@ func TestRunTarget(t *testing.T) {
 	}
 
 	graph = &Graph{
-		Nodes: map[string]*Node{
+		Nodes: map[string]Node{
 			"build": {
 				dependencies: []string{"test"},
 				commands:     []string{"echo 'build'"},

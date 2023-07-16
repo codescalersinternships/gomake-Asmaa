@@ -37,11 +37,12 @@ func ParseMakefile(filePath string) (*Graph, error) {
 	scanner := bufio.NewScanner(file)
 
 	graph := &Graph{
-		Nodes:   make(map[string]*Node),
+		Nodes:   make(map[string]Node),
 		visited: map[string]bool{},
 		inStack: map[string]bool{},
 	}
-	var currentTarget *Node
+	var currentTarget Node
+	targetName := ""
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -54,28 +55,28 @@ func ParseMakefile(filePath string) (*Graph, error) {
 		if strings.Contains(line, ":") {
 			parts := strings.Split(line, ":")
 
-			targetName := strings.TrimSpace(parts[0])
+			targetName = strings.TrimSpace(parts[0])
 			if targetName == "" {
 				return nil, ErrorInvalidFormat
 			}
 
-			currentTarget = &Node{
+			currentTarget = Node{
 				dependencies: make([]string, 0),
 				commands:     make([]string, 0),
 			}
 
-			graph.Nodes[targetName] = currentTarget
 			// Found a dependency for the current target
 			dependencies := strings.Fields(parts[1])
 			currentTarget.dependencies = append(currentTarget.dependencies, dependencies...)
-
+			graph.Nodes[targetName] = currentTarget
 			continue
 		}
 
 		// Found a command for the current target
-		if strings.HasPrefix(line, "\t") && currentTarget != nil {
+		if strings.HasPrefix(line, "\t") && targetName != "" {
 			command := strings.TrimPrefix(line, "\t")
 			currentTarget.commands = append(currentTarget.commands, command)
+			graph.Nodes[targetName] = currentTarget
 			continue
 		}
 		return nil, ErrorInvalidFormat

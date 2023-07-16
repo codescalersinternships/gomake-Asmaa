@@ -13,7 +13,7 @@ type Node struct {
 
 // Graph represents the entire graph
 type Graph struct {
-	Nodes   map[string]*Node
+	Nodes   map[string]Node
 	visited map[string]bool
 	inStack map[string]bool
 }
@@ -33,8 +33,8 @@ func DFS(graph *Graph, node string) error {
 	graph.inStack[node] = true
 
 	for _, dep := range visitedNode.dependencies {
-		depNode := graph.Nodes[dep]
-		if depNode == nil {
+		_, found := graph.Nodes[dep]
+		if !found {
 			return fmt.Errorf("%w dependency: %s not found for target: %s", ErrorDependencyNotFound, dep, node)
 		}
 
