@@ -40,11 +40,11 @@ func DFS(graph *Graph, node string) error {
 	for _, dep := range visitedNode.Dependencies {
 		depNode := graph.Nodes[dep]
 		if depNode == nil {
-			return fmt.Errorf("%w dependency: %w not found for target: %w", ErrorDependencyNotFound, dep, node)
+			return fmt.Errorf("%w dependency: %s not found for target: %s", ErrorDependencyNotFound, dep, node)
 		}
 
 		if depNode.InStack {
-			return fmt.Errorf("%w found between: %w -> %w", ErrorCircularDependency, node, dep)
+			return fmt.Errorf("%w found between: %s -> %s", ErrorCircularDependency, node, dep)
 		}
 
 		if !depNode.Visited {

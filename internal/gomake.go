@@ -90,7 +90,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 func CheckNoCommands(graph *Graph) error {
 	for _, node := range graph.Nodes {
 		if len(node.Commands) == 0 {
-			return fmt.Errorf("%w:%w", ErrorNoCommandFound, node)
+			return fmt.Errorf("%w:%v", ErrorNoCommandFound, node)
 		}
 	}
 	return nil
