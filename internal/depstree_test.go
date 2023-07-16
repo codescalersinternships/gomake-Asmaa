@@ -10,7 +10,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 	makefile := `target:
 		echo "Hello, World!"`
 
-	file, err := ioutil.TempFile("", "Makefile")
+	file, err := ioutil.TempFile(os.TempDir(), "Makefile")
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
