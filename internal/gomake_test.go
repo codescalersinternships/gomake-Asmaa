@@ -33,19 +33,18 @@ func TestParseCommand(t *testing.T) {
 	}
 }
 
-func TestCheckMakeFile(t *testing.T) {
-	_, err := CheckMakeFile("test")
+func TestParseMakefile(t *testing.T) {
+
+	_, err := ParseMakefile("test")
 	if err == nil {
 		t.Errorf("Error: %s", err)
 	}
 
-	_, err = CheckMakeFile("../Makefile")
+	_, err = ParseMakefile("../Makefile")
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
-}
 
-func TestParseMakefile(t *testing.T) {
 	makefile := `
 target:
 	echo "Hello, World!"`

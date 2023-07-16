@@ -9,12 +9,12 @@ import (
 
 func main() {
 
-	arg1 := flag.String("f", "Makefile", "make file path")
+	makefilePath := flag.String("f", "Makefile", "Makefile path")
 
-	arg2 := flag.String("t", "", "make file path")
+	targetFlag := flag.String("t", "", "target")
 	flag.Parse()
 
-	filePath, target, err := internal.ParseCommand(*arg1, *arg2)
+	filePath, target, err := internal.ParseCommand(*makefilePath, *targetFlag)
 	if err != nil {
 		fmt.Println("Error parsing Makefile:", err)
 		return

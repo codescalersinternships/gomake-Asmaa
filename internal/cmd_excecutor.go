@@ -1,14 +1,11 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 )
 
-// ErrorTargetNotFound
-var ErrorTargetNotFound = errors.New("target not found")
 
 // RunTarget executes the commands for the specified target
 func RunTarget(graph *Graph, targetName string) error {

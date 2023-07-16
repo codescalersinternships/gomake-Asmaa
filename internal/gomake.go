@@ -14,21 +14,8 @@ var ErrorNoTarget = errors.New("no target found")
 // ErrorInvalidFormat
 var ErrorInvalidFormat = errors.New("invalid format for makefile")
 
-// ErrorNoFile
-var ErrorNoFile = errors.New("file not found")
-
 // ErrorNoCommandFound
 var ErrorNoCommandFound = errors.New("commands not found for target")
-
-// CheckMakeFile checks for error in openning file
-func CheckMakeFile(filePath string) (*os.File, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, ErrorNoFile
-	}
-
-	return file, nil
-}
 
 // ParseCommand parses command entered from the user
 func ParseCommand(filePath string, target string) (string, string, error) {
@@ -42,7 +29,7 @@ func ParseCommand(filePath string, target string) (string, string, error) {
 // ParseMakefile parses the Makefile and returns the graph representation
 func ParseMakefile(filePath string) (*Graph, error) {
 
-	file, err := CheckMakeFile(filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +90,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 func CheckNoCommands(graph *Graph) error {
 	for _, node := range graph.Nodes {
 		if len(node.Commands) == 0 {
-			return fmt.Errorf("error %v:%v", ErrorNoCommandFound, node)
+			return fmt.Errorf("%w:%w", ErrorNoCommandFound, node)
 		}
 	}
 	return nil

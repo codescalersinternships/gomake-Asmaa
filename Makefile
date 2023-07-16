@@ -1,8 +1,5 @@
-build: test publish
-	echo 'executing build'
+build: test
+	go build -o bin/gomake cmd/main.go
 
 test: 
-	echo 'executing test'
-
-publish:
-	echo 'executing publish'
+	go test ./...
