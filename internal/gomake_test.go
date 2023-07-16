@@ -66,7 +66,7 @@ target:
 		Nodes: map[string]*Node{
 			"target": {
 				dependencies: []string{},
-				commands:     []string{"echo \"Hello, World!\""},
+				commands:     []string{`echo "Hello, World!"`},
 			},
 		},
 	}
@@ -76,7 +76,7 @@ target:
 		t.Errorf("Error: %s", err)
 	}
 
-	if !reflect.DeepEqual(graph, expectedGraph) {
+	if !reflect.DeepEqual(graph.Nodes, expectedGraph.Nodes) {
 		t.Errorf("Parsed graph %v does not match expected graph %v", graph, expectedGraph)
 	}
 

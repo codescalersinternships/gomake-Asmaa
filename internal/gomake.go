@@ -38,6 +38,8 @@ func ParseMakefile(filePath string) (*Graph, error) {
 
 	graph := &Graph{
 		Nodes: make(map[string]*Node),
+		visited:     map[string]bool{},
+		inStack:   map[string]bool{},
 	}
 	var currentTarget *Node
 

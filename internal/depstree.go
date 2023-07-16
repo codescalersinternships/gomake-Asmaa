@@ -9,13 +9,13 @@ import (
 type Node struct {
 	dependencies []string
 	commands     []string
-	visited      bool
-	inStack      bool
 }
 
 // Graph represents the entire graph
 type Graph struct {
 	Nodes map[string]*Node
+	visited      map[string]bool
+	inStack      map[string]bool
 }
 
 // ErrorDependencyNotFound
@@ -29,8 +29,8 @@ func DFS(graph *Graph, node string) error {
 
 	visitedNode := graph.Nodes[node]
 
-	visitedNode.visited = true
-	visitedNode.inStack = true
+	graph.visited[node] = true
+	graph.inStack[node] = true
 
 	for _, dep := range visitedNode.dependencies {
 		depNode := graph.Nodes[dep]
@@ -38,11 +38,11 @@ func DFS(graph *Graph, node string) error {
 			return fmt.Errorf("%w dependency: %s not found for target: %s", ErrorDependencyNotFound, dep, node)
 		}
 
-		if depNode.inStack {
+		if graph.inStack[dep] {
 			return fmt.Errorf("%w found between: %s -> %s", ErrorCircularDependency, node, dep)
 		}
 
-		if !depNode.visited {
+		if !graph.visited[dep] {
 			err := DFS(graph, dep)
 			if err != nil {
 				return err
@@ -50,7 +50,7 @@ func DFS(graph *Graph, node string) error {
 		}
 	}
 
-	visitedNode.inStack = false
+	graph.inStack[node] = false
 	return nil
 }
 
@@ -58,8 +58,7 @@ func DFS(graph *Graph, node string) error {
 func CheckCircularDependencies(graph *Graph) error {
 
 	for node := range graph.Nodes {
-		visitedNode := graph.Nodes[node]
-		if !visitedNode.visited {
+		if !graph.visited[node]{
 			err := DFS(graph, node)
 			if err != nil {
 				return err
