@@ -46,7 +46,7 @@ func TestRunTarget(t *testing.T) {
 		Nodes: map[string]*Node{
 			"build": {
 				dependencies: []string{"test"},
-				commands:     []string{"echo 'build'"},
+				commands:     []string{"@echo 'build'"},
 			},
 			"test": {
 				dependencies: []string{},

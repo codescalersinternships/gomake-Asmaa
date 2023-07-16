@@ -84,6 +84,10 @@ target:
 :
 	echo "Hello, World!"`
 
+	file, err = os.Create(filePath)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
@@ -98,6 +102,10 @@ target:
  : test
 	echo "Hello, World!"`
 
+	file, err = os.Create(filePath)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
@@ -116,6 +124,10 @@ target:
 	makefile = `
 	echo 'executing build`
 
+	file, err = os.Create(filePath)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
