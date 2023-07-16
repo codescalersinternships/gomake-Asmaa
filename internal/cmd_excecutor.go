@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 // RunTarget executes the commands for the specified target
 func RunTarget(graph *Graph, targetName string) error {
 
