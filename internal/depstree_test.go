@@ -16,10 +16,6 @@ func TestCheckCircularDependencies(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
-	_, err = file.WriteString(makefile)
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
 	defer os.Remove(file.Name())
 
 	_, err = file.WriteString(makefile)

@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -49,7 +49,9 @@ func TestParseMakefile(t *testing.T) {
 target:
 	echo "Hello, World!"`
 
-	file, err := ioutil.TempFile("", "Makefile")
+	dir := os.TempDir()
+	filePath := filepath.Join(dir, "Makefile")
+	file, err := os.Create(filePath)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
@@ -82,12 +84,6 @@ target:
 :
 	echo "Hello, World!"`
 
-	file, err = ioutil.TempFile("", "Makefile")
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-	defer os.Remove(file.Name())
-
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
@@ -101,12 +97,6 @@ target:
 	makefile = `
  : test
 	echo "Hello, World!"`
-
-	file, err = ioutil.TempFile("", "Makefile")
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-	defer os.Remove(file.Name())
 
 	_, err = file.WriteString(makefile)
 	if err != nil {
@@ -126,12 +116,6 @@ target:
 	makefile = `
 	echo 'executing build`
 
-	file, err = ioutil.TempFile("", "Makefile")
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-	defer os.Remove(file.Name())
-
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
@@ -150,11 +134,14 @@ func TestCheckNoCommands(t *testing.T) {
 	
 	test: build
 		echo 'testtttttttttttt'`
-	file, err := ioutil.TempFile("", "Makefile")
+	dir := os.TempDir()
+	filePath := filepath.Join(dir, "Makefile")
+	file, err := os.Create(filePath)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
 	defer os.Remove(file.Name())
+
 	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
