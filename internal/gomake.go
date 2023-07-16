@@ -58,14 +58,14 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			}
 
 			currentTarget = &Node{
-				Dependencies: make([]string, 0),
-				Commands:     make([]Command, 0),
+				dependencies: make([]string, 0),
+				commands:     make([]string, 0),
 			}
 
 			graph.Nodes[targetName] = currentTarget
 			// Found a dependency for the current target
 			dependencies := strings.Fields(parts[1])
-			currentTarget.Dependencies = append(currentTarget.Dependencies, dependencies...)
+			currentTarget.dependencies = append(currentTarget.dependencies, dependencies...)
 
 			continue
 		}
@@ -73,12 +73,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 		// Found a command for the current target
 		if strings.HasPrefix(line, "\t") && currentTarget != nil {
 			command := strings.TrimPrefix(line, "\t")
-			prefix := false
-			if strings.HasPrefix(command, "@") {
-				prefix = true
-				command = command[1:]
-			}
-			currentTarget.Commands = append(currentTarget.Commands, Command{command, prefix})
+			currentTarget.commands = append(currentTarget.commands, command)
 			continue
 		}
 		return nil, ErrorInvalidFormat
@@ -89,7 +84,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 // CheckNoCommands checks if there is a traget that hasn't commands
 func CheckNoCommands(graph *Graph) error {
 	for _, node := range graph.Nodes {
-		if len(node.Commands) == 0 {
+		if len(node.commands) == 0 {
 			return fmt.Errorf("%w:%v", ErrorNoCommandFound, node)
 		}
 	}

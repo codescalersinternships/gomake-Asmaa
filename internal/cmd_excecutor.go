@@ -15,7 +15,7 @@ func RunTarget(graph *Graph, targetName string) error {
 	}
 
 	// Execute dependencies first
-	for _, dep := range target.Dependencies {
+	for _, dep := range target.dependencies {
 		err := RunTarget(graph, dep)
 		if err != nil {
 			return err
@@ -23,11 +23,13 @@ func RunTarget(graph *Graph, targetName string) error {
 	}
 
 	// Execute the target's commands
-	for _, command := range target.Commands {
-		if !command.prefix {
-			fmt.Println(command.command)
+	for _, command := range target.commands {
+		if !strings.HasPrefix(command, "@") {
+			fmt.Println(command)
+		} else {
+			command = command[1:]
 		}
-		parts := strings.Fields(string(command.command))
+		parts := strings.Fields(command)
 
 		name := parts[0]
 		arg := parts[1:]

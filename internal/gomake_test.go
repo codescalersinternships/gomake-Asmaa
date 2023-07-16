@@ -65,8 +65,8 @@ target:
 	expectedGraph := &Graph{
 		Nodes: map[string]*Node{
 			"target": {
-				Dependencies: []string{},
-				Commands:     []Command{{"echo \"Hello, World!\"", false}},
+				dependencies: []string{},
+				commands:     []string{"echo \"Hello, World!\""},
 			},
 		},
 	}
