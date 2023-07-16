@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -10,7 +10,13 @@ func TestCheckCircularDependencies(t *testing.T) {
 	makefile := `target:
 		echo "Hello, World!"`
 
-	file, err := ioutil.TempFile(os.TempDir(), "Makefile")
+	dir := os.TempDir()
+	filePath := filepath.Join(dir, "Makefile")
+	file, err := os.Create(filePath)
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}
+	_, err = file.WriteString(makefile)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
