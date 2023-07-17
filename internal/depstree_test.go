@@ -32,7 +32,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 	if err == nil {
 		t.Errorf("expect found error")
 	}
-	
+
 	graph = &Graph{
 		Nodes: map[string]Node{
 			"build": {
