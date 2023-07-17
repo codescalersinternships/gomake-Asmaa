@@ -3,24 +3,24 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/codescalersinternships/gomake-Asmaa/internal"
 )
 
 func main() {
 
-	makefilePath := flag.String("f", "Makefile", "Makefile path")
+	filePath := flag.String("f", "Makefile", "Makefile path")
 
-	targetFlag := flag.String("t", "", "target")
+	target := flag.String("t", "", "target")
 	flag.Parse()
 
-	filePath, target, err := internal.ParseCommand(*makefilePath, *targetFlag)
-	if err != nil {
-		fmt.Println("Error parsing Makefile:", err)
+	if len(*target) == 0 {
+		fmt.Println("Error parsing Makefile:", internal.ErrorNoTarget)
 		return
 	}
 
-	graph, err := internal.ParseMakefile(filePath)
+	graph, err := internal.ParseMakefile(*filePath)
 	if err != nil {
 		fmt.Println("Error parsing Makefile:", err)
 		return
@@ -38,9 +38,9 @@ func main() {
 		return
 	}
 
-	err = internal.RunTarget(graph, target)
+	err = internal.RunTarget(graph, *target)
 	if err != nil {
 		fmt.Println("Error running target:", err)
-		return
+		os.Exit(1)
 	}
 }

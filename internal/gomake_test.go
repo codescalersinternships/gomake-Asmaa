@@ -7,32 +7,6 @@ import (
 	"testing"
 )
 
-func TestParseCommand(t *testing.T) {
-	args1 := "file"
-	args2 := "target"
-	filePath, target, err := ParseCommand(args1, args2)
-
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	if filePath != "file" {
-		t.Errorf("Expected file path: file, but got: %s", filePath)
-	}
-
-	if target != "target" {
-		t.Errorf("Expected target name: target, but got: %s", target)
-	}
-
-	args2 = ""
-
-	_, _, err = ParseCommand(args1, args2)
-
-	if err != ErrorNoTarget {
-		t.Errorf("error target: %s", err)
-	}
-}
-
 func TestParseMakefile(t *testing.T) {
 
 	_, err := ParseMakefile("test")

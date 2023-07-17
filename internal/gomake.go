@@ -17,15 +17,6 @@ var ErrorInvalidFormat = errors.New("invalid format for makefile")
 // ErrorNoCommandFound
 var ErrorNoCommandFound = errors.New("commands not found for target")
 
-// ParseCommand parses command entered from the user
-func ParseCommand(filePath string, target string) (string, string, error) {
-
-	if len(target) == 0 {
-		return "", "", ErrorNoTarget
-	}
-	return filePath, target, nil
-}
-
 // ParseMakefile parses the Makefile and returns the graph representation
 func ParseMakefile(filePath string) (*Graph, error) {
 
