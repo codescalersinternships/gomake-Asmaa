@@ -1,70 +1,49 @@
 package internal
 
 import (
-	"os"
-	"path/filepath"
 	"testing"
 )
 
 func TestCheckCircularDependencies(t *testing.T) {
-	makefile := `target:
-		echo "Hello, World!"`
 
-	dir := os.TempDir()
-	filePath := filepath.Join(dir, "Makefile")
-	file, err := os.Create(filePath)
-	if err != nil {
-		t.Errorf("Error: %s", err)
+	graph := &Graph{
+		Nodes: map[string]Node{
+			"target": {
+				dependencies: []string{},
+				commands:     []string{`echo "Hello, World!"`},
+			},
+		},
 	}
-	defer os.Remove(file.Name())
-
-	_, err = file.WriteString(makefile)
+	err := graph.CheckCircularDependencies()
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
 
-	graph, err := ParseMakefile(file.Name())
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	err = graph.CheckCircularDependencies()
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	makefile = `target: test
-	echo "Hello, World!"`
-	_, err = file.WriteString(makefile)
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	graph, err = ParseMakefile(file.Name())
-	if err != nil {
-		t.Errorf("Error: %s", err)
+	graph = &Graph{
+		Nodes: map[string]Node{
+			"target": {
+				dependencies: []string{"test"},
+				commands:     []string{`echo "Hello, World!"`},
+			},
+		},
 	}
 
 	err = graph.CheckCircularDependencies()
 	if err == nil {
-		t.Errorf("Error: %s", err)
+		t.Errorf("expect found error")
 	}
-
-	makefile = `
-build: test
-	echo 'executing buildaaaa'
-	@echo 'cmd2'
-
-test: build
-	echo 'testtttttttttttt'`
-	_, err = file.WriteString(makefile)
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	graph, err = ParseMakefile(file.Name())
-	if err != nil {
-		t.Errorf("Error: %s", err)
+	
+	graph = &Graph{
+		Nodes: map[string]Node{
+			"build": {
+				dependencies: []string{"test"},
+				commands:     []string{`echo "build"`, `@echo 'cmd2'`},
+			},
+			"test": {
+				dependencies: []string{"build"},
+				commands:     []string{`echo "test"`},
+			},
+		},
 	}
 
 	err = graph.CheckCircularDependencies()
