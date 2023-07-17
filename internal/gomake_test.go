@@ -17,7 +17,7 @@ target:
 	if err == nil {
 		t.Errorf("error in makefile path")
 	}
-	
+
 	dir := os.TempDir()
 	filePath := filepath.Join(dir, "Makefile")
 	file, err := os.Create(filePath)
@@ -34,7 +34,7 @@ target:
 	_, err = ParseMakefile(file.Name())
 	if err != nil {
 		t.Errorf("Error: %s", err)
-	}	
+	}
 
 	expectedGraph := &Graph{
 		Nodes: map[string]Node{
