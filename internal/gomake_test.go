@@ -9,20 +9,15 @@ import (
 
 func TestParseMakefile(t *testing.T) {
 
-	_, err := ParseMakefile("test")
-	if err == nil {
-		t.Errorf("Error: %s", err)
-	}
-
-	_, err = ParseMakefile("../Makefile")
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
-
 	makefile := `
 target:
 	echo "Hello, World!"`
 
+	_, err := ParseMakefile("Makefile")
+	if err == nil {
+		t.Errorf("error in makefile path")
+	}
+	
 	dir := os.TempDir()
 	filePath := filepath.Join(dir, "Makefile")
 	file, err := os.Create(filePath)
@@ -35,6 +30,11 @@ target:
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
+
+	_, err = ParseMakefile(file.Name())
+	if err != nil {
+		t.Errorf("Error: %s", err)
+	}	
 
 	expectedGraph := &Graph{
 		Nodes: map[string]Node{
