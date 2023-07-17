@@ -28,7 +28,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 	scanner := bufio.NewScanner(file)
 
 	graph := &Graph{
-		Nodes:   make(map[string]Node),
+		Nodes: make(map[string]Node),
 	}
 	var currentTarget Node
 	targetName := ""

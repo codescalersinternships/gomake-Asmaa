@@ -13,7 +13,7 @@ type Node struct {
 
 // Graph represents the entire graph
 type Graph struct {
-	Nodes   map[string]Node
+	Nodes map[string]Node
 }
 
 // ErrorDependencyNotFound
@@ -55,7 +55,7 @@ func (graph *Graph) DFS(node string, visited map[string]bool, inStack map[string
 // CheckCircularDependencies checks for circular dependencies
 func (graph *Graph) CheckCircularDependencies() error {
 
-	visited :=  map[string]bool{}
+	visited := map[string]bool{}
 	inStack := map[string]bool{}
 
 	for node := range graph.Nodes {
