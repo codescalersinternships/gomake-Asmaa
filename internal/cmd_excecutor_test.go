@@ -5,7 +5,6 @@ import (
 )
 
 func TestRunTarget(t *testing.T) {
-	// Set up a sample graph with targets and commands
 	graph := &Graph{
 		Nodes: map[string]Node{
 			"build": {
@@ -71,5 +70,30 @@ func TestRunTarget(t *testing.T) {
 	err = RunTarget(graph, "build")
 	if err == nil {
 		t.Errorf("error executing command")
+	}
+
+	graph = &Graph{
+		Nodes: map[string]Node{
+			"build": {
+				dependencies: []string{"test", "publish"},
+				commands:     []string{"echo 'build'"},
+			},
+			"test": {
+				dependencies: []string{"execute"},
+				commands:     []string{"echo 'test'"},
+			},
+			"publish": {
+				dependencies: []string{},
+				commands:     []string{"echo 'publish'"},
+			},
+			"execute": {
+				dependencies: []string{},
+				commands:     []string{"echo 'execute'"},
+			},
+		},
+	}
+	err = RunTarget(graph, "build")
+	if err != nil {
+		t.Errorf("RunTarget returned an error: %s", err)
 	}
 }
