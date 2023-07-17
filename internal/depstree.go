@@ -25,7 +25,7 @@ var ErrorDependencyNotFound = errors.New("dependency not found")
 var ErrorCircularDependency = errors.New("circular dependency")
 
 // DFS performs a depth-first search to detect cycles
-func DFS(graph *Graph, node string) error {
+func (graph *Graph) DFS(node string) error {
 
 	visitedNode := graph.Nodes[node]
 
@@ -43,7 +43,7 @@ func DFS(graph *Graph, node string) error {
 		}
 
 		if !graph.visited[dep] {
-			err := DFS(graph, dep)
+			err := graph.DFS(dep)
 			if err != nil {
 				return err
 			}
@@ -59,7 +59,7 @@ func CheckCircularDependencies(graph *Graph) error {
 
 	for node := range graph.Nodes {
 		if !graph.visited[node] {
-			err := DFS(graph, node)
+			err := graph.DFS(node)
 			if err != nil {
 				return err
 			}
