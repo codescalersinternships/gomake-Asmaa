@@ -74,7 +74,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 }
 
 // CheckNoCommands checks if there is a traget that hasn't commands
-func CheckNoCommands(graph *Graph) error {
+func (graph *Graph) CheckNoCommands() error {
 	for _, node := range graph.Nodes {
 		if len(node.commands) == 0 {
 			return fmt.Errorf("%w:%v", ErrorNoCommandFound, node)

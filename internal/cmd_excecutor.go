@@ -7,7 +7,7 @@ import (
 )
 
 // RunTarget executes the commands for the specified target
-func RunTarget(graph *Graph, targetName string) error {
+func (graph *Graph) RunTarget(targetName string) error {
 
 	target, found := graph.Nodes[targetName]
 	if !found {
@@ -16,7 +16,7 @@ func RunTarget(graph *Graph, targetName string) error {
 
 	// Execute dependencies first
 	for _, dep := range target.dependencies {
-		err := RunTarget(graph, dep)
+		err := graph.RunTarget(dep)
 		if err != nil {
 			return err
 		}

@@ -53,7 +53,7 @@ func (graph *Graph) DFS(node string, visited map[string]bool, inStack map[string
 }
 
 // CheckCircularDependencies checks for circular dependencies
-func CheckCircularDependencies(graph *Graph) error {
+func (graph *Graph) CheckCircularDependencies() error {
 
 	visited :=  map[string]bool{}
 	inStack := map[string]bool{}

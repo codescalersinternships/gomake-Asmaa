@@ -138,7 +138,7 @@ func TestCheckNoCommands(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 
-	err = CheckNoCommands(graph)
+	err = graph.CheckNoCommands()
 	if err == nil {
 		t.Errorf("Error: %s", err)
 	}
@@ -159,7 +159,7 @@ func TestCheckNoCommands(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 
-	err = CheckNoCommands(graph)
+	err = graph.CheckNoCommands()
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}

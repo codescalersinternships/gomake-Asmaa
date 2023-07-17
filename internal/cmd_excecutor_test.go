@@ -14,12 +14,12 @@ func TestRunTarget(t *testing.T) {
 		},
 	}
 
-	err := RunTarget(graph, "main.o")
+	err := graph.RunTarget("main.o")
 	if err == nil {
 		t.Errorf("No target has name main.o")
 	}
 
-	err = RunTarget(graph, "build")
+	err = graph.RunTarget("build")
 	if err != nil {
 		t.Errorf("RunTarget returned an error: %s", err)
 	}
@@ -33,7 +33,7 @@ func TestRunTarget(t *testing.T) {
 		},
 	}
 
-	err = RunTarget(graph, "build")
+	err = graph.RunTarget("build")
 	if err == nil {
 		t.Errorf("error executing command")
 	}
@@ -50,7 +50,7 @@ func TestRunTarget(t *testing.T) {
 			},
 		},
 	}
-	err = RunTarget(graph, "build")
+	err = graph.RunTarget("build")
 	if err != nil {
 		t.Errorf("RunTarget returned an error: %s", err)
 	}
@@ -67,7 +67,7 @@ func TestRunTarget(t *testing.T) {
 			},
 		},
 	}
-	err = RunTarget(graph, "build")
+	err = graph.RunTarget("build")
 	if err == nil {
 		t.Errorf("error executing command")
 	}
@@ -92,7 +92,7 @@ func TestRunTarget(t *testing.T) {
 			},
 		},
 	}
-	err = RunTarget(graph, "build")
+	err = graph.RunTarget("build")
 	if err != nil {
 		t.Errorf("RunTarget returned an error: %s", err)
 	}

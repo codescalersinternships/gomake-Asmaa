@@ -28,7 +28,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 
-	err = CheckCircularDependencies(graph)
+	err = graph.CheckCircularDependencies()
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
@@ -45,7 +45,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 		t.Errorf("Error: %s", err)
 	}
 
-	err = CheckCircularDependencies(graph)
+	err = graph.CheckCircularDependencies()
 	if err == nil {
 		t.Errorf("Error: %s", err)
 	}
@@ -67,7 +67,7 @@ test: build
 		t.Errorf("Error: %s", err)
 	}
 
-	err = CheckCircularDependencies(graph)
+	err = graph.CheckCircularDependencies()
 	if err == nil {
 		t.Errorf("Error: %s", err)
 	}

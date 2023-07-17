@@ -26,19 +26,19 @@ func main() {
 		return
 	}
 
-	err = internal.CheckNoCommands(graph)
+	err = graph.CheckNoCommands()
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	err = internal.CheckCircularDependencies(graph)
+	err = graph.CheckCircularDependencies()
 	if err != nil {
 		fmt.Println("Error", err)
 		return
 	}
 
-	err = internal.RunTarget(graph, *target)
+	err = graph.RunTarget(*target)
 	if err != nil {
 		fmt.Println("Error running target:", err)
 		os.Exit(1)
