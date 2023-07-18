@@ -10,11 +10,12 @@ import (
 
 func TestParseMakefile(t *testing.T) {
 
-	dir := os.TempDir()
+	dir := t.TempDir()
 	filePath := filepath.Join(dir, "Makefile")
 
 	t.Run("Run non existing file", func(t *testing.T) {
-		_, err := ParseMakefile("Makefile")
+		WrongPath := "File"
+		_, err := ParseMakefile(WrongPath)
 		if err == nil {
 			t.Errorf("error in makefile path")
 		}
@@ -25,18 +26,12 @@ func TestParseMakefile(t *testing.T) {
 target:
 	echo "Hello, World!"`
 
-		file, err := os.Create(filePath)
-		if err != nil {
-			t.Errorf("Error: %s", err)
-		}
-		defer os.Remove(file.Name())
-
-		_, err = file.WriteString(makefile)
+		err := os.WriteFile(filePath, []byte(makefile), 0644)
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
 
-		_, err = ParseMakefile(file.Name())
+		_, err = ParseMakefile(filePath)
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
@@ -50,7 +45,7 @@ target:
 			},
 		}
 
-		graph, _ := ParseMakefile(file.Name())
+		graph, _ := ParseMakefile(filePath)
 
 		if !reflect.DeepEqual(graph.Nodes, expectedGraph.Nodes) {
 			t.Errorf("Parsed graph %v does not match expected graph %v", graph, expectedGraph)
@@ -63,18 +58,12 @@ target:
 		:
 			echo "Hello, World!"`
 
-		file, err := os.Create(filePath)
-		if err != nil {
-			t.Errorf("Error: %s", err)
-		}
-		defer os.Remove(file.Name())
-
-		_, err = file.WriteString(makefile)
+		err := os.WriteFile(filePath, []byte(makefile), 0644)
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
 
-		_, err = ParseMakefile(file.Name())
+		_, err = ParseMakefile(filePath)
 		if err != ErrorInvalidFormat {
 			t.Errorf("Error: %s", err)
 		}
@@ -85,14 +74,10 @@ target:
 		: test
 		   echo "Hello, World!"`
 
-		file, _ := os.Create(filePath)
-		_, err := file.WriteString(makefile)
-		if err != nil {
-			t.Errorf("Error: %s", err)
-		}
-		defer os.Remove(file.Name())
-
-		_, err = ParseMakefile(file.Name())
+		dir := t.TempDir()
+		filePath := filepath.Join(dir, "Makefile")
+		err := os.WriteFile(filePath, []byte(makefile), 0644)
+		_, err = ParseMakefile(filePath)
 		if err != ErrorInvalidFormat {
 			t.Errorf("Error: %s", err)
 		}
@@ -103,14 +88,12 @@ target:
 		makefile := `
 		echo 'executing build`
 
-		file, _ := os.Create(filePath)
-		_, err := file.WriteString(makefile)
+		err := os.WriteFile(filePath, []byte(makefile), 0644)
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
-		defer os.Remove(file.Name())
 
-		_, err = ParseMakefile(file.Name())
+		_, err = ParseMakefile(filePath)
 		if err != ErrorInvalidFormat {
 			t.Errorf("Error: %s", err)
 		}
