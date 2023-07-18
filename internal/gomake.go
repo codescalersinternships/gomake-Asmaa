@@ -17,6 +17,12 @@ var ErrorInvalidFormat = errors.New("invalid format for makefile")
 // ErrorNoCommandFound if target hassn't commands
 var ErrorNoCommandFound = errors.New("commands not found for target")
 
+func newGrap() *Graph {
+	return &Graph{
+		Nodes: make(map[string]Node),
+	}
+}
+
 // ParseMakefile parses the Makefile and returns the graph representation
 func ParseMakefile(filePath string) (*Graph, error) {
 
@@ -27,9 +33,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 
 	scanner := bufio.NewScanner(file)
 
-	graph := &Graph{
-		Nodes: make(map[string]Node),
-	}
+	graph := newGrap()
 	var currentTarget Node
 	targetName := ""
 
