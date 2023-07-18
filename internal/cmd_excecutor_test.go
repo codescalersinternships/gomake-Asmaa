@@ -1,9 +1,9 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"testing"
-	"errors"
 )
 
 func TestRunTarget(t *testing.T) {

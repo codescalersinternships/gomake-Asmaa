@@ -1,12 +1,12 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
-	"errors"
 )
 
 func TestParseMakefile(t *testing.T) {
