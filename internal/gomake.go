@@ -40,6 +40,14 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			continue
 		}
 
+		// Found a command for the current target
+		if strings.HasPrefix(line, "\t") && targetName != "" {
+			command := strings.TrimPrefix(line, "\t")
+			currentTarget.commands = append(currentTarget.commands, command)
+			graph.Nodes[targetName] = currentTarget
+			continue
+		}
+		
 		// Found a new target
 		if strings.Contains(line, ":") {
 			parts := strings.Split(line, ":")
@@ -57,14 +65,6 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			// Found a dependency for the current target
 			dependencies := strings.Fields(parts[1])
 			currentTarget.dependencies = append(currentTarget.dependencies, dependencies...)
-			graph.Nodes[targetName] = currentTarget
-			continue
-		}
-
-		// Found a command for the current target
-		if strings.HasPrefix(line, "\t") && targetName != "" {
-			command := strings.TrimPrefix(line, "\t")
-			currentTarget.commands = append(currentTarget.commands, command)
 			graph.Nodes[targetName] = currentTarget
 			continue
 		}
