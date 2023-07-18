@@ -1,53 +1,69 @@
 package internal
 
 import (
+	"fmt"
+	"reflect"
 	"testing"
 )
 
 func TestCheckCircularDependencies(t *testing.T) {
 
-	graph := &Graph{
-		Nodes: map[string]Node{
-			"target": {
-				dependencies: []string{},
-				commands:     []string{`echo "Hello, World!"`},
+	t.Run("Graph without circulat dependency", func(t *testing.T) {
+		graph := &Graph{
+			Nodes: map[string]Node{
+				"target": {
+					dependencies: []string{},
+					commands:     []string{`echo "Hello, World!"`},
+				},
 			},
-		},
-	}
-	err := graph.CheckCircularDependencies()
-	if err != nil {
-		t.Errorf("Error: %s", err)
-	}
+		}
+		err := graph.CheckCircularDependencies()
+		if err != nil {
+			t.Errorf("Error: %s", err)
+		}
+	})
 
-	graph = &Graph{
-		Nodes: map[string]Node{
-			"target": {
-				dependencies: []string{"test"},
-				commands:     []string{`echo "Hello, World!"`},
+	t.Run("Run target with non existing dependency", func(t *testing.T) {
+		graph := &Graph{
+			Nodes: map[string]Node{
+				"target": {
+					dependencies: []string{"test"},
+					commands:     []string{`echo "Hello, World!"`},
+				},
 			},
-		},
-	}
+		}
 
-	err = graph.CheckCircularDependencies()
-	if err == nil {
-		t.Errorf("expect found error")
-	}
+		dep := "test"
+		node := "target"
+		want := fmt.Errorf("%w dependency: %s not found for target: %s", ErrorDependencyNotFound, dep, node)
 
-	graph = &Graph{
-		Nodes: map[string]Node{
-			"build": {
-				dependencies: []string{"test"},
-				commands:     []string{`echo "build"`, `@echo 'cmd2'`},
+		err := graph.CheckCircularDependencies()
+		if !reflect.DeepEqual(err, want) {
+			t.Errorf("there is non existing dependency found for target")
+		}
+	})
+
+	t.Run("Graph with circular dependency", func(t *testing.T) {
+		graph := &Graph{
+			Nodes: map[string]Node{
+				"build": {
+					dependencies: []string{"test"},
+					commands:     []string{`echo "build"`, `@echo 'cmd2'`},
+				},
+				"test": {
+					dependencies: []string{"build"},
+					commands:     []string{`echo "test"`},
+				},
 			},
-			"test": {
-				dependencies: []string{"build"},
-				commands:     []string{`echo "test"`},
-			},
-		},
-	}
+		}
 
-	err = graph.CheckCircularDependencies()
-	if err == nil {
-		t.Errorf("Error: %s", err)
-	}
+		node := "test"
+		dep := "build"
+		want := fmt.Errorf("%w found between: %s -> %s", ErrorCircularDependency, node, dep)
+
+		err := graph.CheckCircularDependencies()
+		if !reflect.DeepEqual(err, want) {
+			t.Errorf("circular dependency should exist")
+		}
+	})
 }
