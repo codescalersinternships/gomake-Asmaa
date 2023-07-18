@@ -67,6 +67,8 @@ target:
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
+		defer os.Remove(file.Name())
+
 		_, err = file.WriteString(makefile)
 		if err != nil {
 			t.Errorf("Error: %s", err)
@@ -88,6 +90,7 @@ target:
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
+		defer os.Remove(file.Name())
 
 		_, err = ParseMakefile(file.Name())
 		if err != ErrorInvalidFormat {
@@ -105,6 +108,7 @@ target:
 		if err != nil {
 			t.Errorf("Error: %s", err)
 		}
+		defer os.Remove(file.Name())
 
 		_, err = ParseMakefile(file.Name())
 		if err != ErrorInvalidFormat {
