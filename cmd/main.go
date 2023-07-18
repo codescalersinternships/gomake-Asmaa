@@ -9,18 +9,19 @@ import (
 )
 
 func main() {
+	var filePath string
+	flag.StringVar(&filePath, "f", "Makefile", "Makefile path")
 
-	filePath := flag.String("f", "Makefile", "Makefile path")
-
-	target := flag.String("t", "", "target")
+	var target string
+	flag.StringVar(&target, "t", "", "target")
 	flag.Parse()
 
-	if len(*target) == 0 {
+	if len(target) == 0 {
 		fmt.Println("Error parsing Makefile:", internal.ErrorNoTarget)
 		return
 	}
 
-	graph, err := internal.ParseMakefile(*filePath)
+	graph, err := internal.ParseMakefile(filePath)
 	if err != nil {
 		fmt.Println("Error parsing Makefile:", err)
 		return
@@ -38,7 +39,7 @@ func main() {
 		return
 	}
 
-	err = graph.RunTarget(*target)
+	err = graph.RunTarget(target)
 	if err != nil {
 		fmt.Println("Error running target:", err)
 		os.Exit(1)
