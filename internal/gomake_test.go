@@ -78,6 +78,10 @@ target:
 		dir := t.TempDir()
 		filePath := filepath.Join(dir, "Makefile")
 		err := os.WriteFile(filePath, []byte(makefile), 0644)
+		if err != nil {
+			t.Errorf("Error: %s", err)
+		}
+
 		_, err = ParseMakefile(filePath)
 		if err != ErrorInvalidFormat {
 			t.Errorf("Error: %s", err)
