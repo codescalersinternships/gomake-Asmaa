@@ -2,7 +2,7 @@ package internal
 
 import (
 	"fmt"
-	"reflect"
+	"errors"
 	"testing"
 )
 
@@ -38,7 +38,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 		want := fmt.Errorf("%w dependency: %s not found for target: %s", ErrorDependencyNotFound, dep, node)
 
 		err := graph.CheckCircularDependencies()
-		if !reflect.DeepEqual(err, want) {
+		if errors.Is(err, want) { 
 			t.Errorf("there is non existing dependency found for target")
 		}
 	})
@@ -62,7 +62,7 @@ func TestCheckCircularDependencies(t *testing.T) {
 		want := fmt.Errorf("%w found between: %s -> %s", ErrorCircularDependency, node, dep)
 
 		err := graph.CheckCircularDependencies()
-		if !reflect.DeepEqual(err, want) {
+		if errors.Is(err, want) { 
 			t.Errorf("circular dependency should exist")
 		}
 	})

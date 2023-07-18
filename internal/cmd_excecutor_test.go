@@ -2,8 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
+	"errors"
 )
 
 func TestRunTarget(t *testing.T) {
@@ -21,7 +21,7 @@ func TestRunTarget(t *testing.T) {
 		want := fmt.Errorf("target %s not found", targetName)
 
 		err := graph.RunTarget(targetName)
-		if !reflect.DeepEqual(err, want) {
+		if errors.Is(err, want) {
 			t.Errorf("run non existing target %s %s", err, want)
 		}
 	})

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"testing"
+	"errors"
 )
 
 func TestParseMakefile(t *testing.T) {
@@ -119,7 +120,7 @@ func TestCheckNoCommands(t *testing.T) {
 		want := fmt.Errorf("%w:%v", ErrorNoCommandFound, graph.Nodes["build"])
 
 		err := graph.CheckNoCommands()
-		if !reflect.DeepEqual(err, want) {
+		if errors.Is(err, want) {
 			t.Errorf("target hasn't commands should give error")
 		}
 	})
