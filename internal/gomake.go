@@ -53,7 +53,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 		}
 
 		// Found a new target
-		if strings.Contains(line, ":") {
+		if strings.Contains(line, ":") && strings.Count(line, ":") == 1 {
 			parts := strings.Split(line, ":")
 
 			targetName = strings.TrimSpace(parts[0])
