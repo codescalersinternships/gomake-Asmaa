@@ -18,6 +18,6 @@ func main() {
 	app := internal.NewApp()
 	err := app.Run(filePath, target)
 	if err != nil {
-		log.Fatalf("Error:%p", err)
+		log.Fatalf("Error:%s", err)
 	}
 }
