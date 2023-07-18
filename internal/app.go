@@ -8,6 +8,7 @@ func NewApp() *App {
 	return &App{newGrap()}
 }
 
+// Run runs all functions and check if there is an error
 func (app *App) Run(filePath string, target string) error {
 	if len(target) == 0 {
 		return ErrorNoTarget
