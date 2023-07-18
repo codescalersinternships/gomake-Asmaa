@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-// ErrorNoTarget
+// ErrorNoTarget if user didn't enter target while running command
 var ErrorNoTarget = errors.New("no target found")
 
-// ErrorInvalidFormat
+// ErrorInvalidFormat if there is an error in Makefile format
 var ErrorInvalidFormat = errors.New("invalid format for makefile")
 
-// ErrorNoCommandFound
+// ErrorNoCommandFound if target hassn't commands
 var ErrorNoCommandFound = errors.New("commands not found for target")
 
 // ParseMakefile parses the Makefile and returns the graph representation
@@ -47,7 +47,7 @@ func ParseMakefile(filePath string) (*Graph, error) {
 			graph.Nodes[targetName] = currentTarget
 			continue
 		}
-		
+
 		// Found a new target
 		if strings.Contains(line, ":") {
 			parts := strings.Split(line, ":")

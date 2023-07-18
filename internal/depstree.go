@@ -16,10 +16,10 @@ type Graph struct {
 	Nodes map[string]Node
 }
 
-// ErrorDependencyNotFound
+// ErrorDependencyNotFound if there is a target has dependency not found
 var ErrorDependencyNotFound = errors.New("dependency not found")
 
-// ErrorCircularDependency
+// ErrorCircularDependency if there is a circular dependency between targets
 var ErrorCircularDependency = errors.New("circular dependency")
 
 // DFS performs a depth-first search to detect cycles
