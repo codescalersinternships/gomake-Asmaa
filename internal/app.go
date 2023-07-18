@@ -5,7 +5,7 @@ type App struct {
 }
 
 func NewApp() *App {
-	return &App{newGrap()}
+	return &App{newGraph()}
 }
 
 // Run runs all functions and check if there is an error
